@@ -69,7 +69,6 @@ const Formulario = ({setMoneda,setCriptomoneda}) =>{
         
         setError(false);
         setMoneda(moneda);
-        alert('Primer cripto' + criptomoneda);
         setCriptomoneda(criptomoneda);
 
 

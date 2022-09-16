@@ -4,6 +4,7 @@ import axios from 'axios';
 import imagen from './criptocurrency.jpg';
 import Formulario from './components/Formulario';
 import Cotizacion from './components/Cotizacion';
+import Spinner from './components/Spinner';
 
 
 const Contenedor = styled.div`
@@ -45,25 +46,39 @@ function App() {
   const[moneda, setMoneda] = useState('');
   const[criptomoneda,setCriptomoneda]= useState('');
   const[resultado, setResultado] = useState({});
+  const[cargando, setCargando] = useState(false);
 
   useEffect(() => {
 
     //Evitamos la ejecucion la primera vez 
-    if(moneda === '')return;
-    
+    if(moneda === '')return;    
     //
-    const cotizarCriptomoneda = async () =>{
-      alert(criptomoneda);
-      const url = `https://min-api.cryptocompare.com/data/pricemultifull?fsyms=BTC&tsyms=${moneda}`;
+    const cotizarCriptomoneda = async () => {
+      const url = `https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${criptomoneda}&tsyms=${moneda}`;
       const resultado = await axios.get(url);
+
+      //mostrar el spinner 
+      setCargando(true);
+
+      //ocultar el spinner y mostrar el resultado
+      setTimeout(() => {
+
+        setCargando(false);
+
+        setResultado(resultado.data.DISPLAY[criptomoneda][moneda]);
+
+      }, 3000)
+
       //Usar console log hasta que se llegue a los datos con los que sea mas facil trabajar
-      setResultado(resultado);    
-      console.log(resultado)  
-  }
-  cotizarCriptomoneda(); 
-  },[moneda,criptomoneda]);
+      
+    }
+    cotizarCriptomoneda();
+    }, [moneda, criptomoneda]);
+
+    const componente = (cargando) ?<Spinner/> : <Cotizacion resultado={resultado} />    
 
   return (
+    //Mostrar Spinner o resultado   
 
     <Contenedor>
       <div>
@@ -81,9 +96,8 @@ function App() {
           setCriptomoneda={setCriptomoneda}       
         />  
         
-        <Cotizacion 
-          resultado={resultado}
-        />      
+        {componente}
+        
       </div>
     </Contenedor>
   );

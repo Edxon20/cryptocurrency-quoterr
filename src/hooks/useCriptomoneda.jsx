@@ -1,4 +1,4 @@
-import React,{Fragment, useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import styled from '@emotion/styled';
 
 const Label = styled.label`
@@ -10,50 +10,40 @@ const Label = styled.label`
     margin-top: 2rem;
     display: block;
 `;
-
 const Select = styled.select`
-
     width: 100%;
-    display: block;
+    display:block;
     padding: 1rem;
-    -webkit-appearance: none; //Se utiliza para quitarle por defecto la estructura estandar
+    -webkit-appearance: none;
     border-radius: 10px;
     border: none;
-    font-size: 1.8rem;
-
-
+    font-size: 1.2rem;
 `;
 
-const useCriptomoneda = (label,stateInicial, opciones) => {
+const useCriptomoneda = (label, stateInicial, opciones) => {
+
+    // console.log(opciones);
 
     // State de nuestro custom hook
-    const [state,actualizarState] = useState(stateInicial);
-
-    const coinGet = e =>{
-        actualizarState(e.target.Name);
-        console.log(e.target.value);
-    }
+    const [state, actualizarState] = useState(stateInicial);
 
     const SelectCripto = () => (
         <Fragment>
             <Label>{label}</Label>
             <Select
-                onChange={coinGet}
-                value = {state}
+                onChange={ e => actualizarState(e.target.value)}
+                value={state}
             >
-            <option value=''>--Selecciones--</option>
+                <option value="">- Seleccione -</option>
                 {opciones.map(opcion => (
-
-                    <option key={opcion.CoinInfo.Id} value={opcion.CoinInfo.Id}>{opcion.CoinInfo.Name}</option>
-                    
+                    <option key={opcion.CoinInfo.Id} value={opcion.CoinInfo.Name}>{opcion.CoinInfo.FullName}</option>
                 ))}
             </Select>
         </Fragment>
     );
 
-    // Retornar state, interfaz y funcion que modifica el state 
-    
-    return [state, SelectCripto];
+    // Retornar state, interfaz y fn que modifica el state
+    return [state, SelectCripto, actualizarState];
 }
 
 export default useCriptomoneda;
