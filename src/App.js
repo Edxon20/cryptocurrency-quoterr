@@ -50,12 +50,15 @@ function App() {
 
     //Evitamos la ejecucion la primera vez 
     if(moneda === '')return;
-
+    
+    //
     const cotizarCriptomoneda = async () =>{
-      const url = `https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${criptomoneda}&tsyms=${moneda}`;
+      alert(criptomoneda);
+      const url = `https://min-api.cryptocompare.com/data/pricemultifull?fsyms=BTC&tsyms=${moneda}`;
       const resultado = await axios.get(url);
       //Usar console log hasta que se llegue a los datos con los que sea mas facil trabajar
-      setResultado(resultado.data.DISPLAY[criptomoneda][moneda]);      
+      setResultado(resultado);    
+      console.log(resultado)  
   }
   cotizarCriptomoneda(); 
   },[moneda,criptomoneda]);
